@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAuth } from "../../auth/AuthProvider";
 import { PucCoopService } from "../../services/pucCoop.service";
 import { PucCoopState, setPucCoop } from "../../features/pucCoop/pucCoopSlice";
 import { IPucCoop } from "../../interfaces/PucCoop";
+import BotonArchivo from "./BotonArchivo";
 import * as XLSX from "xlsx";
 import Swal from "sweetalert2";
 
 const CargueBalance: React.FC = () => {
+  const { getUser } = useAuth(); // Llama al hook en el nivel superior
+  const user = getUser();
+  const isStaff = user?.is_staff || false;
+
   const [isLoading, setIsLoading] = useState(false);
   const [periodo, setPeriodo] = useState<number | null>(null);
   const [mes, setMes] = useState<number | null>(null);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const apiUrlv1 = process.env.REACT_APP_API_URL_2;
-
   const dispatch = useDispatch();
-  // const { pucCoop } = useSelector((state: { pucCoop: PucCoopState }) => state);
 
   const [extractedData, setExtractedData] = useState<any[]>([]);
 
@@ -166,24 +170,16 @@ const CargueBalance: React.FC = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
-          //console.log("FileReader onload triggered");
-
           const data = e?.target?.result;
-          //console.log("Data read from file:", data);
-
           const workbook = XLSX.read(data, { type: "array" });
-          //console.log("Workbook parsed:", workbook);
 
           const sheetName = workbook.SheetNames[0];
-          //console.log("Sheet name:", sheetName);
 
           const worksheet = workbook.Sheets[sheetName];
-          //console.log("Worksheet:", worksheet);
 
           const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet, {
             header: 1,
           });
-          //console.log("JSON Data:", jsonData);
 
           let pucRowIndex = null;
           let entityRowIndex = null;
@@ -191,7 +187,6 @@ const CargueBalance: React.FC = () => {
           for (let row = 0; row < 50; row++) {
             if (jsonData[row] && jsonData[row][0] === "CUENTA") {
               pucRowIndex = row + 2;
-              //console.log("PUC Row Index found:", pucRowIndex);
               break;
             }
           }
@@ -199,14 +194,11 @@ const CargueBalance: React.FC = () => {
           for (let row = 0; row < 50; row++) {
             if (jsonData[row] && jsonData[row][2] === "NOMBRE ENTIDAD") {
               entityRowIndex = row;
-              //console.log("Entity Row Index found:", entityRowIndex);
               break;
             }
           }
 
           if (pucRowIndex === null || entityRowIndex === null) {
-            //console.log(`cuenta ${pucRowIndex}`);
-            //console.log(`entidad ${entityRowIndex}`);
             Swal.fire({
               icon: "error",
               title: "Formato Incorrecto",
@@ -217,7 +209,6 @@ const CargueBalance: React.FC = () => {
           }
 
           const extractedData: any[] = [];
-          //console.log("Starting data extraction");
 
           for (let pucIndex = pucRowIndex; pucIndex <= 3854; pucIndex++) {
             if (!jsonData[pucIndex]) continue;
@@ -238,8 +229,6 @@ const CargueBalance: React.FC = () => {
               extractedData.push(extractedItem);
             }
           }
-
-          //console.log("Extracted data:", extractedData);
           setExtractedData(extractedData);
 
           resolve(extractedData);
@@ -262,34 +251,50 @@ const CargueBalance: React.FC = () => {
 
     if (file) {
       try {
-        //console.log("Starting data extraction process");
         const extractedData: any = await extractDataFromExcelSolidaria(file);
-        //console.log("Extracted data:", extractedData);
-
-        //const response = await fetch("http://localhost:8000/api/v1/bal_coop", {
+        console.log("Extracted data:", extractedData);
         const response = await fetch(`${apiUrlv1}/bal_coop`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(extractedData),
+          body: JSON.stringify({ extractedData, isStaff }),
         });
 
+        // Leer la respuesta solo una vez
+        const responseData = await response.json();
+
         if (!response.ok) {
-          console.error(`HTTP error! Status: ${response.status}`);
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          // Utilizar el mensaje de error obtenido de la respuesta
+          const errorMessage =
+            responseData.errors?.join(", ") ||
+            `HTTP error! Status: ${response.status}`;
+          console.error(
+            `HTTP error! Status: ${response.status}, Message: ${errorMessage}`
+          );
+          throw new Error(errorMessage);
         }
 
-        const jsonData = await response.json();
-        console.log("Response JSON data:", jsonData);
+        console.log("Response JSON data:", responseData);
 
         setPeriodo(null);
         setMes(null);
         setButtonDisabled(true);
         setIsLoading(false);
-        Swal.fire({
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
           icon: "success",
-          title: "Datos guardados con éxito!",
           text: "La información se subió correctamente.",
         });
       } catch (error) {
@@ -298,10 +303,23 @@ const CargueBalance: React.FC = () => {
         setPeriodo(null);
         setMes(null);
         setButtonDisabled(true);
-        Swal.fire({
+        // Mostrar el mensaje de error específico en la alerta
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
           icon: "error",
-          title: "Error",
-          text: "Revise que el formato sea sobre el cargue de balance",
+          text:
+            (error as Error).message ||
+            "Revise que el formato sea sobre el cargue de balance",
         });
       }
     }
@@ -357,21 +375,26 @@ const CargueBalance: React.FC = () => {
           <div className="flex justify-center ">
             <div className="w-[calc(1000px)] my-3 mt-3 mx-24 px-8 py-4 pb-8 bg-gray-400 rounded-lg shadow-[8px_10px_10px_12px_rgba(0,0,0,0.3)]">
               <form className="grid gap-4">
-                <div className="mt-4 flex flex-row items-center">
-                  <label
-                    className="mb-2 text-gray-700 font-semibold my-2 mr-5 ml-2"
-                    style={{ fontSize: 28 }}
-                  >
-                    Periodo a cargar
-                  </label>
-                  <div className="w-[calc(250px)]">
-                    <input
-                      id="date_one"
-                      type="month"
-                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      onChange={handleDateChange}
-                      placeholder="Selecciona un periodo"
-                    />
+                <div className="mt-4 flex flex-row place-content-between items-center">
+                  <div className="flex flex-row items-center">
+                    <label
+                      className="mb-2 text-gray-700 font-semibold my-2 mr-5 ml-2"
+                      style={{ fontSize: 28 }}
+                    >
+                      Periodo a cargar
+                    </label>
+                    <div className="w-[calc(250px)]">
+                      <input
+                        id="date_one"
+                        type="month"
+                        className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        onChange={handleDateChange}
+                        placeholder="Selecciona un periodo"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <BotonArchivo />
                   </div>
                 </div>
               </form>
@@ -430,7 +453,7 @@ const CargueBalance: React.FC = () => {
                     htmlFor="fileInput2"
                     className="bg-teal-600 hover:bg-teal-800 text-gray-50 font-semibold py-5 px-3 rounded-lg cursor-pointer"
                   >
-                    Supesolidaria
+                    Super Solidaria
                   </label>
                   <input
                     type="file"

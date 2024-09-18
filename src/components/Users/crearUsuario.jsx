@@ -5,7 +5,7 @@ import { UserService } from "../../services/user.service";
 import Swal from "sweetalert2";
 import PasswordIcon from "../Navbar/Perfil/passwordIcon";
 
-const NewUser = ({ isOpen, closeModal }) => {
+const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
   const apiUrl = process.env.REACT_APP_API_URL_1;
   const [usuarioName, setUsuarioName] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -39,13 +39,12 @@ const NewUser = ({ isOpen, closeModal }) => {
   };
 
   const validateEmail = (value) => {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!value) return "El correo no puede estar vacío.";
-    if (!regex.test(value))
-      return "La dirección de correo electrónico proporcionada no parece válida. Asegúrate de incluir un '@' y un dominio válido.";
+    // if (!regex.test(value)) return "La dirección de correo electrónico proporcionada no parece válida.";
     return "";
   };
-
+  
   const validatePermissions = (value) => {
     if (!value) return "El campo de permisos no puede estar vacío.";
     return "";
@@ -113,6 +112,7 @@ const NewUser = ({ isOpen, closeModal }) => {
         icon: "success",
         title: `Usuario registrado con éxito`,
       });
+      if (onUserCreated) onUserCreated(); 
       handleClearUser();
     } catch (error) {
         const errorMessage = error.response?.data?.detail || "Error al crear el usuario.";
@@ -221,13 +221,12 @@ const NewUser = ({ isOpen, closeModal }) => {
           <div className="grid gap-4 mb-4 grid-cols-2">
             <div className="col-span-2">
               <label
-                htmlFor="EmailNewUser"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Correo Electrónico
               </label>
               <input
-                type="text"
+                type="email"
                 value={userEmail}
                 onChange={handleUserEmail}
                 className={`bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ${
@@ -240,7 +239,6 @@ const NewUser = ({ isOpen, closeModal }) => {
             </div>
             <div className="col-span-2 sm:col-span-1">
               <label
-                htmlFor="newUsername"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Nombre de Usuario

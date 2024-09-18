@@ -44,7 +44,7 @@ function Sidebar() {
   const userData = [user?.is_staff];
 
   return (
-    <div className="h-screen max-w-[15rem] p-2 shadow-xl shadow-blue-gray-900/5 bg-slate-700">
+    <div className="h-screen  max-w-[15rem] p-2 shadow-xl shadow-blue-gray-900/5 bg-slate-700">
       <List>
         <Accordion
           open={open === 1}
@@ -121,14 +121,14 @@ function Sidebar() {
           }
         >
           <ListItem
-            className={`p-0 hover:bg-slate-300 ${
+            className={`p-0 hover:bg-slate-300 w-[170px] ${
               open === 2 ? "bg-slate-500" : ""
             }`}
             selected={open === 2}
           >
             <AccordionHeader
               onClick={() => handleOpen(2)}
-              className="border-b-0 p-3"
+              className="border-b-0 p-3 "
             >
               <ListItemPrefix>
                 <RectangleStackIcon className="h-7 w-7 p-1 fill-slate-400" />
@@ -137,15 +137,15 @@ function Sidebar() {
                 color="blue-gray"
                 className="mr-auto font-normal text-slate-400"
               >
-                Servicios
+                Servicios {"    "}
               </Typography>
             </AccordionHeader>
           </ListItem>
-          <AccordionBody className="py-1">
+          <AccordionBody className="py-1 ">
             <Link to="/cargue_balances">
-              <List className={`p-0 ${open === 2 ? "block" : "hidden"}`}>
+              <List className={`p-0 ${open === 2 ? "block" : "hidden"} `}>
                 <ListItem className="hover:bg-slate-300 h-7">
-                  <Typography className="mr-1 font-normal text-slate-400">
+                  <Typography className="mr-1 font-normal text-slate-400 ">
                     Cargue de balance
                   </Typography>
                 </ListItem>

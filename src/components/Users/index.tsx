@@ -39,6 +39,11 @@ function Users() {
     fetchData();
   }, []);
 
+  const handleUserCreated = () => {
+    fetchData(); 
+  };
+
+
   const abrirCrearUsuario = () => {
     setCreateUserOpen(true);
   };
@@ -67,6 +72,7 @@ function Users() {
           <NewUser
             isOpen={createUserOpen}
             closeModal={() => setCreateUserOpen(false)}
+            onUserCreated={handleUserCreated}
           />
         </div>
         <div className="gap-6 w-[calc(1100px)]">
