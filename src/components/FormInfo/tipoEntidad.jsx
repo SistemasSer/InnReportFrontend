@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const TipoEntidad = ({ onSelectionChange }) => {
+const TipoEntidad = ({ onSelectionChange, titulo }) => {
   const [selectedTipoEntidadIds, setSelectedTipoEntidadIds] = useState([]);
   const [selectedGremioIds, setSelectedGremioIds] = useState([]);
   const [selectedGrupoIds, setSelectedGrupoIds] = useState([]);
@@ -177,7 +177,7 @@ const TipoEntidad = ({ onSelectionChange }) => {
       <div className="">
         <div>
           <h3 className="text-lg mb-3 font-bold dark:text-white">
-            Tamaño de Activos
+            Tamaño de {titulo}
           </h3>
         </div>
         <div className="mt-1">

@@ -170,14 +170,15 @@ export const FormInfo = (props: any) => {
   const [shouldNavigate, setShouldNavigate] = useState(false);
 
   interface AddedItems {
-    solidaria: Array<{ nit: number; sigla: string; RazonSocial: string }>;
+    solidaria: Array<{ nit: number; sigla: string; RazonSocial: string; dv: number; }>;
     superfinanciera: Array<{ nit: number; sigla: string; RazonSocial: string }>;
   }
 
   const fetchData = async (
     tipoEntidadIds: number[],
     gremioIds: number[],
-    grupoIds: number[]
+    grupoIds: number[],
+    puc: string
   ) => {
     if (
       tipoEntidadIds.length === 0 &&
@@ -203,6 +204,7 @@ export const FormInfo = (props: any) => {
         grupoIds.length > 0
           ? `Grupo_Activo=${grupoIds.join("&Grupo_Activo=")}`
           : "",
+        puc ? `puc=${puc}` : "",
       ]
         .filter(Boolean)
         .join("&");
@@ -222,6 +224,7 @@ export const FormInfo = (props: any) => {
             nit: item.Nit,
             sigla: item.Sigla,
             RazonSocial: item.RazonSocial,
+            dv: item.Dv,
           });
         } else {
           newAddedItems.superfinanciera.push({
@@ -236,7 +239,7 @@ export const FormInfo = (props: any) => {
       dispatch(setEntidad(res));
       setAddedItems(newAddedItems);
       setIsLoadingEntidad(false);
-      console.log("nuevos items", newAddedItems);
+      // console.log("nuevos items", newAddedItems);
     } catch (error) {
       setIsLoadingEntidad(false);
       console.log("Error ==>", error);
@@ -252,8 +255,8 @@ export const FormInfo = (props: any) => {
   }, [selectedTipoEntidadIds, selectedGremioIds, selectedGrupoIds]);
 
   useEffect(() => {
-    fetchData(selectedTipoEntidadIds, selectedGremioIds, selectedGrupoIds);
-  }, [selectedTipoEntidadIds, selectedGremioIds, selectedGrupoIds]);
+    fetchData(selectedTipoEntidadIds, selectedGremioIds, selectedGrupoIds, puc);
+  }, [selectedTipoEntidadIds, selectedGremioIds, selectedGrupoIds, puc]);
 
   interface DateState {
     periodo: number;
@@ -362,17 +365,17 @@ export const FormInfo = (props: any) => {
 
       return;
     }
-
-    //const url_1 = "http://localhost:8000/api/v1/bal_sup_a";
-    //const url_2 = "http://localhost:8000/api/v1/bal_coop_a";
     const url_1 = `${apiUrlv1}/bal_sup_a`;
     const url_2 = `${apiUrlv1}/bal_coop_a`;
     const payload = validDates;
 
-    console.log("dataOne: ", JSON.stringify(payload));
+    console.log(payload);
+    
+
+    // console.log("dataOne: ", JSON.stringify(payload));
 
     try {
-      console.log("Realizando fetch a URL 1:", url_1);
+      // console.log("Realizando fetch a URL 1:", url_1);
       const response_1 = await fetch(url_1, {
         method: "POST",
         headers: {
@@ -381,7 +384,7 @@ export const FormInfo = (props: any) => {
         body: JSON.stringify(payload),
       });
 
-      console.log("Fetch a URL 1 exitoso. Realizando fetch a URL 2:", url_2);
+      // console.log("Fetch a URL 1 exitoso. Realizando fetch a URL 2:", url_2);
       const response_2 = await fetch(url_2, {
         method: "POST",
         headers: {
@@ -389,15 +392,21 @@ export const FormInfo = (props: any) => {
         },
         body: JSON.stringify(payload),
       });
+      // console.log(JSON.stringify(payload));
+      
 
       const data_1 = await response_1.json();
+      console.log("data_1");
       console.log(data_1);
       const data_2 = await response_2.json();
+      console.log("data_2");
       console.log(data_2);
+
 
       const data: IActive[] = Object.values(data_1).concat(
         Object.values(data_2)
       ) as IActive[];
+
       dispatch(setActive(data));
       setIsLoading(false);
       setShouldNavigate(true);
@@ -505,69 +514,69 @@ export const FormInfo = (props: any) => {
     return data.map((item: DataItemCartera) => {
       const {
         Entidad,
-        totalA,
-        totalB,
-        totalC,
-        totalD,
-        totalE,
-        totalTotal,
-        totalCastigos,
-        totalIndMora,
-        totalDeterioro,
-        totalPorcCobertura,
-        consumoA,
-        consumoB,
-        consumoC,
-        consumoD,
-        consumoE,
-        consumoTotal,
-        consumoIndMora,
-        consumoCartImprod,
-        consumoDeterioro,
-        consumoPorcCobertura,
-        microcreditoA,
-        microcreditoB,
-        microcreditoC,
-        microcreditoD,
-        microcreditoE,
-        microcreditoTotal,
-        microcreditoIndMora,
-        microcreditoCartImprod,
-        microcreditoDeterioro,
-        microcreditoPorcCobertura,
-        comercialA,
-        comercialB,
-        comercialC,
-        comercialD,
-        comercialE,
-        comercialTotal,
-        comercialIndMora,
-        comercialCartImprod,
-        comercialDeterioro,
-        comercialPorcCobertura,
-        viviendaA,
-        viviendaB,
-        viviendaC,
-        viviendaD,
-        viviendaE,
-        viviendaTotal,
-        viviendaIndMora,
-        viviendaCartImprod,
-        viviendaDeterioro,
-        viviendaPorcCobertura,
-        empleadosA,
-        empleadosB,
-        empleadosC,
-        empleadosD,
-        empleadosE,
-        empleadosTotal,
-        empleadosIndMora,
-        empleadosCartImprod,
-        empleadosDeterioro,
-        empleadosPorcCobertura,
+        totalA = 0,
+        totalB = 0,
+        totalC = 0,
+        totalD = 0,
+        totalE = 0,
+        totalTotal = 0,
+        totalCastigos = 0,
+        totalIndMora = 0,
+        totalDeterioro = 0,
+        totalPorcCobertura = 0,
+        consumoA = 0,
+        consumoB = 0,
+        consumoC = 0,
+        consumoD = 0,
+        consumoE = 0,
+        consumoTotal = 0,
+        consumoIndMora = 0,
+        consumoCartImprod = 0,
+        consumoDeterioro = 0,
+        consumoPorcCobertura = 0,
+        microcreditoA = 0,
+        microcreditoB = 0,
+        microcreditoC = 0,
+        microcreditoD = 0,
+        microcreditoE = 0,
+        microcreditoTotal = 0,
+        microcreditoIndMora = 0,
+        microcreditoCartImprod = 0,
+        microcreditoDeterioro = 0,
+        microcreditoPorcCobertura = 0,
+        comercialA = 0,
+        comercialB = 0,
+        comercialC = 0,
+        comercialD = 0,
+        comercialE = 0,
+        comercialTotal = 0,
+        comercialIndMora = 0,
+        comercialCartImprod = 0,
+        comercialDeterioro = 0,
+        comercialPorcCobertura = 0,
+        viviendaA = 0,
+        viviendaB = 0,
+        viviendaC = 0,
+        viviendaD = 0,
+        viviendaE = 0,
+        viviendaTotal = 0,
+        viviendaIndMora = 0,
+        viviendaCartImprod = 0,
+        viviendaDeterioro = 0,
+        viviendaPorcCobertura = 0,
+        empleadosA = 0,
+        empleadosB = 0,
+        empleadosC = 0,
+        empleadosD = 0,
+        empleadosE = 0,
+        empleadosTotal = 0,
+        empleadosIndMora = 0,
+        empleadosCartImprod = 0,
+        empleadosDeterioro = 0,
+        empleadosPorcCobertura = 0,
         ...otherFields
       } = item;
-
+  
       return {
         "": Entidad,
         "CARTERA GENERAL": "",
@@ -578,9 +587,9 @@ export const FormInfo = (props: any) => {
         "Calificada en E": formatCurrency(totalE),
         "Total cartera": formatCurrency(totalTotal),
         "Cartera castigada": formatCurrency(totalCastigos),
-        "Indicador de calidad de cartera": totalIndMora.toFixed(2) + "%",
+        "Indicador de calidad de cartera": (totalIndMora || 0).toFixed(2) + "%",
         Deterioro: formatCurrency(totalDeterioro),
-        "Nivel de cobertura": totalPorcCobertura.toFixed(2) + "%",
+        "Nivel de cobertura": (totalPorcCobertura || 0).toFixed(2) + "%",
         CONSUMO: "",
         "Consumo calificada en A": formatCurrency(consumoA),
         "Consumo calificada en B": formatCurrency(consumoB),
@@ -588,12 +597,10 @@ export const FormInfo = (props: any) => {
         "Consumo calificada en D": formatCurrency(consumoD),
         "Consumo calificada en E": formatCurrency(consumoE),
         "Consumo total cartera": formatCurrency(consumoTotal),
-        "Consumo indicador calidad de cartera": consumoIndMora.toFixed(2) + "%",
-        "Consumo indicador cartera improductiva":
-          consumoCartImprod.toFixed(2) + "%",
+        "Consumo indicador calidad de cartera": (consumoIndMora || 0).toFixed(2) + "%",
+        "Consumo indicador cartera improductiva": (consumoCartImprod || 0).toFixed(2) + "%",
         "Consumo deterioro": formatCurrency(consumoDeterioro),
-        "Consumo porcentaje de cobertura":
-          consumoPorcCobertura.toFixed(2) + "%",
+        "Consumo porcentaje de cobertura": (consumoPorcCobertura || 0).toFixed(2) + "%",
         MICROCREDITO: "",
         "Microcredito calificada en A": formatCurrency(microcreditoA),
         "Microcredito calificada en B": formatCurrency(microcreditoB),
@@ -601,13 +608,10 @@ export const FormInfo = (props: any) => {
         "Microcredito calificada en D": formatCurrency(microcreditoD),
         "Microcredito calificada en E": formatCurrency(microcreditoE),
         "Microcredito total cartera": formatCurrency(microcreditoTotal),
-        "Microcredito indicador calidad de cartera":
-          microcreditoIndMora.toFixed(2) + "%",
-        "Microcredito indicador cartera improductiva":
-          microcreditoCartImprod.toFixed(2) + "%",
+        "Microcredito indicador calidad de cartera": (microcreditoIndMora || 0).toFixed(2) + "%",
+        "Microcredito indicador cartera improductiva": (microcreditoCartImprod || 0).toFixed(2) + "%",
         "Microcredito deterioro": formatCurrency(microcreditoDeterioro),
-        "Microcredito porcentaje de cobertura":
-          microcreditoPorcCobertura.toFixed(2) + "%",
+        "Microcredito porcentaje de cobertura": (microcreditoPorcCobertura || 0).toFixed(2) + "%",
         COMERCIAL: "",
         "Comercial calificada en A": formatCurrency(comercialA),
         "Comercial calificada en B": formatCurrency(comercialB),
@@ -615,13 +619,10 @@ export const FormInfo = (props: any) => {
         "Comercial calificada en D": formatCurrency(comercialD),
         "Comercial calificada en E": formatCurrency(comercialE),
         "Comercial total cartera": formatCurrency(comercialTotal),
-        "Comercial indicador calidad de cartera":
-          comercialIndMora.toFixed(2) + "%",
-        "Comercial indicador cartera improductiva":
-          comercialCartImprod.toFixed(2) + "%",
+        "Comercial indicador calidad de cartera": (comercialIndMora || 0).toFixed(2) + "%",
+        "Comercial indicador cartera improductiva": (comercialCartImprod || 0).toFixed(2) + "%",
         "Comercial deterioro": formatCurrency(comercialDeterioro),
-        "Comercial porcentaje de cobertura":
-          comercialPorcCobertura.toFixed(2) + "%",
+        "Comercial porcentaje de cobertura": (comercialPorcCobertura || 0).toFixed(2) + "%",
         VIVIENDA: "",
         "Vivienda calificada en A": formatCurrency(viviendaA),
         "Vivienda calificada en B": formatCurrency(viviendaB),
@@ -629,13 +630,10 @@ export const FormInfo = (props: any) => {
         "Vivienda calificada en D": formatCurrency(viviendaD),
         "Vivienda calificada en E": formatCurrency(viviendaE),
         "Vivienda total cartera": formatCurrency(viviendaTotal),
-        "Vivienda indicador calidad de cartera":
-          viviendaIndMora.toFixed(2) + "%",
-        "Vivienda indicador cartera improductiva":
-          viviendaCartImprod.toFixed(2) + "%",
+        "Vivienda indicador calidad de cartera": (viviendaIndMora || 0).toFixed(2) + "%",
+        "Vivienda indicador cartera improductiva": (viviendaCartImprod || 0).toFixed(2) + "%",
         "Vivienda deterioro": formatCurrency(viviendaDeterioro),
-        "Vivienda porcentaje de cobertura":
-          viviendaPorcCobertura.toFixed(2) + "%",
+        "Vivienda porcentaje de cobertura": (viviendaPorcCobertura || 0).toFixed(2) + "%",
         EMPLEADOS: "",
         "Empleados calificada en A": formatCurrency(empleadosA),
         "Empleados calificada en B": formatCurrency(empleadosB),
@@ -643,13 +641,10 @@ export const FormInfo = (props: any) => {
         "Empleados calificada en D": formatCurrency(empleadosD),
         "Empleados calificada en E": formatCurrency(empleadosE),
         "Empleados total cartera": formatCurrency(empleadosTotal),
-        "Empleados indicador calidad de cartera":
-          empleadosIndMora.toFixed(2) + "%",
-        "Empleados indicador cartera improductiva":
-          empleadosCartImprod.toFixed(2) + "%",
+        "Empleados indicador calidad de cartera": (empleadosIndMora || 0).toFixed(2) + "%",
+        "Empleados indicador cartera improductiva": (empleadosCartImprod || 0).toFixed(2) + "%",
         "Empleados deterioro": formatCurrency(empleadosDeterioro),
-        "Empleados porcentaje de cobertura":
-          empleadosPorcCobertura.toFixed(2) + "%",
+        "Empleados porcentaje de cobertura": (empleadosPorcCobertura || 0).toFixed(2) + "%",
         ...otherFields,
       };
     });
@@ -681,8 +676,7 @@ export const FormInfo = (props: any) => {
         Cartera: indicadorCartera.toFixed(2) + "%",
         Depositos: indicadorDeposito.toFixed(2) + "%",
         Obligaciones: indicadorObligaciones.toFixed(2) + "%",
-        "Capital social - aportes sociales":
-          indicadorCapSocial.toFixed(2) + "%",
+        "Capital social - aportes sociales":indicadorCapSocial.toFixed(2) + "%",
         "Capital institucional": indicadorCapInst.toFixed(2) + "%",
         "ANALISIS CUENTA DE RESULTADOS": "",
         ROE: indicadorRoe.toFixed(2),
@@ -734,10 +728,6 @@ export const FormInfo = (props: any) => {
       return;
     }
 
-    //const url_3 = "http://localhost:8000/api/v1/bal_sup/indicador_financiero";
-    //const url_4 = "http://localhost:8000/api/v1/bal_coop/indicador_financiero";
-    //const url_5 = "http://localhost:8000/api/v1/bal_sup/indicador_cartera";
-    //const url_6 = "http://localhost:8000/api/v1/bal_coop/indicador_cartera";
     const url_3 = `${apiUrlv1}/bal_sup/indicador_financiero`;
     const url_4 = `${apiUrlv1}/bal_coop/indicador_financiero`;
     const url_5 = `${apiUrlv1}/bal_sup/indicador_cartera`;
@@ -818,7 +808,8 @@ export const FormInfo = (props: any) => {
 
       const formattedData = formatIndicatorsToPercentage(modifiedData);
       const formattedData2 = formatIndicatorsCartera(modifiedData2);
-
+      console.log(formattedData);
+      
       const keys2 = Object.keys(formattedData2[0] || {});
       const transposedData2: (string | number | null)[][] = [];
 
@@ -1038,6 +1029,7 @@ export const FormInfo = (props: any) => {
     const url_6 = `${apiUrlv1}/bal_coop/indicador_cartera`;
     const payload = validDates;
 
+    // console.log(payload);
     try {
       const response_3 = await fetch(url_3, {
         method: "POST",
@@ -1081,6 +1073,9 @@ export const FormInfo = (props: any) => {
       const data_cartera: IActive[] = Object.values(data_5).concat(
         Object.values(data_6)
       ) as IActive[];
+
+      // console.log(data_cartera);
+      
 
       const modifiedData = data_financiero.map((item) => {
         const Entidad = `${item.sigla} (${getMonthName(item.mes)} - ${
@@ -1135,6 +1130,11 @@ export const FormInfo = (props: any) => {
         transposedData.push(row);
       });
 
+      // console.log("transportedata");
+      // console.log(transposedData);
+      // console.log("transportedata2");
+      // console.log(transposedData2);
+      
       PdfIndicadores({ data1: transposedData, data2: transposedData2, title });
 
       setShowTable(false)
@@ -1417,7 +1417,9 @@ export const FormInfo = (props: any) => {
                   )}
                   {activeTab === "tab2" && (
                     <div id="horizontal-right-alignment-2" role="tabpanel">
-                      <TipoEntidad onSelectionChange={handleSelectionChange} />
+                      <TipoEntidad 
+                      onSelectionChange={handleSelectionChange} 
+                      titulo={title}/>
                     </div>
                   )}
                 </>

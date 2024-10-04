@@ -101,8 +101,8 @@ function Report() {
 
   const fetchData = async () => {
     try {
-      console.log("active info: ", active);
-      console.log("data info: ", data);
+      // console.log("active info: ", active);
+      // console.log("data info: ", data);
       // console.log('dateOne info: ',combinedDate)
 
       // const res: IActive[] = await activeService.post([
@@ -165,6 +165,7 @@ function Report() {
       "Diciembre",
     ];
     return monthNames[monthNumber - 1];
+
   };
   if (dateOne) {
     combinedDate1 = `${dateOne.periodo}-${getMonthName(dateOne.mes)}`;
@@ -252,6 +253,8 @@ function Report() {
       "saldoSix",
     ];
   }
+  // console.log(data);
+  
 
   const transformData = (
     data: Data,
@@ -302,6 +305,10 @@ function Report() {
     };
   };
 
+  // console.log("transformData");
+  // console.log(transformData);
+  
+
   const newData = transformData(
     active,
     combinedDate1,
@@ -320,6 +327,9 @@ function Report() {
       title: "Los datos fueron cargados correctamente",
     });
   };
+  // console.log("newData");
+  // console.log(newData);
+  
   const barChartData = newData;
 
   interface BarChartItem {
@@ -350,6 +360,9 @@ function Report() {
       saldoSix: parseFloat(item.saldoSix.replace(/[\$,]/g, "")),
     }));
   };
+  // console.log("barChartData.list");
+  // console.log(barChartData.list);
+  
 
   const formattedChartData = prepareChartData(barChartData.list);
 
@@ -370,6 +383,8 @@ function Report() {
     if (inputChart) {
       const canvasChart = await html2canvas(inputChart);
       const imgDataChart = canvasChart.toDataURL("image/png");
+      // console.log("formattedChartData");   
+      // console.log(formattedChartData);   
       PdfInforme({ data: formattedChartData, title, imgDataChart });
     } else {
       console.error("Element 'graficos' not found");
@@ -503,10 +518,10 @@ function Report() {
   ];
 
 
-  console.log(`ChartData`);
-  console.log(formattedChartData);
-  console.log(`ChartKey `);
-  console.log(chartKeys);
+  // console.log(`ChartData`);
+  // console.log(formattedChartData);
+  // console.log(`ChartKey `);
+  // console.log(chartKeys);
 
   return (
     <div className="block mt-0 w-screen px-3 py-3 bg-transparent">

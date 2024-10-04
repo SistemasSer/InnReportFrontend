@@ -267,7 +267,7 @@ const CargueBalance: React.FC = () => {
         if (!response.ok) {
           // Utilizar el mensaje de error obtenido de la respuesta
           const errorMessage =
-            responseData.errors?.join(", ") ||
+            responseData.errors?.join(", ") || 
             `HTTP error! Status: ${response.status}`;
           console.error(
             `HTTP error! Status: ${response.status}, Message: ${errorMessage}`

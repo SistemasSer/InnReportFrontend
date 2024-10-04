@@ -23,6 +23,8 @@ import CapitalSocial from "../components/CapitalSocial";
 import Cartera from "../components/Cartera";
 import Costo from "../components/Costo";
 import Resumen from "../components/Resumen";
+import BalanceCoop from "../components/Balance/pages/BalanceCoop";
+import BalanceSup from "../components/Balance/pages/BalanceSup";
 import {
   BrowserRouter as Router,
   Route,
@@ -266,7 +268,7 @@ function MainLayout() {
                 </ProtectedRoute>
               }
             />
-                        <Route
+            <Route
               path="/Perfil"
               element={
                 <ProtectedRoute>
@@ -274,7 +276,24 @@ function MainLayout() {
                 </ProtectedRoute>
               }
             />
-          </Routes>
+            <Route
+              path="/Balance-coop"
+              element={
+                <ProtectedRoute>
+                  <BalanceCoop />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/Balance-sup"
+              element={
+                <ProtectedRoute>
+                  <BalanceSup />
+                </ProtectedRoute>
+              }
+            />
+            </Routes>
+          
         </main>
       </div>
       {/* {showNavAndFooter && <Footer />}  */}

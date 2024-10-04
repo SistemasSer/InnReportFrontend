@@ -15,6 +15,13 @@ export const PdfInforme = ({ data, title, imgDataChart }) => {
     return monthNames[monthNumber - 1];
   }
 
+  const formatCurrency = (value) => {
+    return `$${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  };
+
+  // console.log("datos");
+  // console.log(data);
+
   const doc = new jsPDF();
   const margin = 14;
   const imageWidth = 50;
@@ -38,25 +45,40 @@ export const PdfInforme = ({ data, title, imgDataChart }) => {
   doc.setDrawColor(255, 255, 255);
   doc.line(lineMargin, lineY, pageWidth - lineMargin, lineY);
 
-  const maxColumns = Math.min(data[0].saldos.length, 6);
-  const tableColumn = ["Entidad"];
+  const filteredData = data.filter(item => item.saldos.length > 0);
 
+  const maxColumns = Math.min(
+    Math.max(...filteredData.map(item => item.saldos.length)),
+    6 
+  );
+
+  const tableColumn = ["Entidad"];
   for (let i = 0; i < maxColumns; i++) {
-    const mes = data[0].saldos[i].mes;
-    const periodo = data[0].saldos[i].periodo;
-    tableColumn.push(`${getMonthName(mes)}-${periodo}`);
+    const mes = filteredData[0].saldos[i]?.mes;
+    const periodo = filteredData[0].saldos[i]?.periodo;
+    if (mes && periodo) {
+      tableColumn.push(`${getMonthName(mes)}-${periodo}`);
+    }
   }
 
   const tableRows = [];
-  data.forEach((item) => {
-    const saldoValues = item.saldos.slice(0, maxColumns).map((saldo) => saldo.saldo);
+  filteredData.forEach((item) => {
+    const saldoValues = item.saldos.slice(0, maxColumns).map((saldo) => formatCurrency(saldo.saldo || 0));
     const rowData = [item.sigla, ...saldoValues];
     tableRows.push(rowData);
   });
+  
+  const columnStyles = {};
+  for (let i = 0; i < tableColumn.length; i++) {
+    columnStyles[i] = { halign: i === 0 ? "center" : "right" }; 
+  }
 
-  const dataLength = data.length;
+  // console.log("tablerow");
+  // console.log(tableRows);
+
+  const dataLength = filteredData.length;
   autoTable(doc, {
-    columnStyles: { europe: { halign: "center" } },
+    columnStyles,
     head: [tableColumn],
     body: tableRows,
     startY: lineY + 5,

@@ -58,6 +58,7 @@ const BuscarEntidades = ({ onItemsAdded, shouldClear }) => {
           nit: item.Nit,
           sigla: item.Sigla,
           RazonSocial: item.RazonSocial,
+          dv: item.Dv,
         });
       } else {
         newAddedItems.superfinanciera.push({

@@ -20,6 +20,7 @@ import {
   RectangleStackIcon,
   // Cog6ToothIcon,
   InboxIcon,
+  ScaleIcon 
   // PowerIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
@@ -320,6 +321,61 @@ function Sidebar() {
                 <ListItem className="hover:bg-slate-300 h-7">
                   <Typography className="mr-1 font-normal text-slate-400">
                     Financieros
+                  </Typography>
+                </ListItem>
+              </List>
+            </Link>
+          </AccordionBody>
+        </Accordion>
+        <Accordion
+          open={open === 5}
+          icon={
+            <ChevronDownIcon
+              strokeWidth={2.5}
+              className={`mx-auto h-4 w-4 transition-transform ${
+                open === 5 ? "rotate-180" : ""
+              }`}
+            />
+          }
+        >
+          <ListItem
+            className={`p-0 hover:bg-slate-300 ${
+              open === 5 ? "bg-slate-500" : ""
+            }`}
+            selected={open === 5}
+          >
+            <AccordionHeader
+              onClick={() => handleOpen(5)}
+              className="border-b-0 p-3"
+            >
+              <ListItemPrefix>
+                <ScaleIcon className="h-7 w-7 p-1 fill-slate-400" />
+              </ListItemPrefix>
+              <Typography
+                color="blue-gray"
+                className="mr-auto font-normal text-slate-400"
+              >
+                Balance
+              </Typography>
+            </AccordionHeader>
+          </ListItem>
+          <AccordionBody className="py-1">
+            <Link to="/Balance-coop">
+              <List className={`p-0 ${open === 5 ? "block" : "hidden"}`}>
+                <ListItem className="hover:bg-slate-300 h-7">
+                  <Typography className="mr-1 font-normal text-slate-400">
+                    Puc Cooperativas
+                  </Typography>
+                </ListItem>
+              </List>
+            </Link>
+          </AccordionBody>
+          <AccordionBody className="py-1">
+            <Link to="/Balance-sup">
+              <List className={`p-0 ${open === 5 ? "block" : "hidden"}`}>
+                <ListItem className="hover:bg-slate-300 h-7">
+                  <Typography className="mr-1 font-normal text-slate-400">
+                    Puc Superfinanciera
                   </Typography>
                 </ListItem>
               </List>
