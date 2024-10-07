@@ -53,7 +53,7 @@ export const Form = () => {
             dispatch(setEntidad(dataArray))
             // for clean form
             dispatch(setData(new Entidad()))
- 
+
             Swal.fire({ 
                 icon: 'success',
                 title: 'The data has been updated' 

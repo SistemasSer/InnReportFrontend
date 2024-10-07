@@ -9,7 +9,7 @@ import * as XLSX from "xlsx";
 import Swal from "sweetalert2";
 
 const CargueBalance: React.FC = () => {
-  const { getUser } = useAuth(); // Llama al hook en el nivel superior
+  const { getUser } = useAuth(); 
   const user = getUser();
   const isStaff = user?.is_staff || false;
 
@@ -230,7 +230,7 @@ const CargueBalance: React.FC = () => {
             }
           }
           setExtractedData(extractedData);
-
+          // console.log(extractedData);
           resolve(extractedData);
         } catch (error) {
           console.error("Error processing file:", error);

@@ -16,6 +16,10 @@ export interface IEntidad {
 	RepresentanteLegal: string,
 	Gremio: number,
 	flag: boolean,
+	Grupo_Activo: number,
+	periodo: number,
+	mes: number,
+	fecha: string,
 	createdAt: Date | null,
 	updatedAt: Date | null
 }
@@ -38,6 +42,10 @@ export class Entidad implements IEntidad{
 	public RepresentanteLegal: string;
 	public Gremio: number ;
 	public flag: boolean;
+	public 	Grupo_Activo: number;
+	public periodo: number;
+	public mes: number;
+	public fecha: string;
 	public createdAt: Date | null;
 	public updatedAt: Date | null;
 
@@ -59,6 +67,10 @@ export class Entidad implements IEntidad{
 		this.RepresentanteLegal = '';
 		this.Gremio = 0;
 		this.flag = false;
+		this.Grupo_Activo = 0;
+		this.periodo = 0;
+		this.mes = 0;
+		this.fecha = '';
 		this.createdAt = null;
 		this.updatedAt = null;
 	}

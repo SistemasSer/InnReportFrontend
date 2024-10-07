@@ -156,11 +156,15 @@ export const FormInfo = (props: any) => {
     };
   } | null>(null);
 
+
+
   const { entidad } = useSelector((state: { entidad: EntidadState }) => state);
   const entidadService = new EntidadService();
   const dispatch = useDispatch();
-  const headers = ["Nit", "Razon social", "Sigla"];
-  const column = ["Nit", "RazonSocial", "Sigla"];
+  // const headers = ["Nit", "Razon social", "Sigla", "fecha"];
+  // const column = ["Nit", "RazonSocial", "Sigla", "periodo"];
+  const initialHeaders = ["Nit", "Razon social", "Sigla"];
+  const initialColumn = ["Nit", "RazonSocial", "Sigla"];
   const infoButton = false;
   const deleteButton = false;
   const updateButton = false;
@@ -174,19 +178,12 @@ export const FormInfo = (props: any) => {
     superfinanciera: Array<{ nit: number; sigla: string; RazonSocial: string }>;
   }
 
-  const fetchData = async (
-    tipoEntidadIds: number[],
-    gremioIds: number[],
-    grupoIds: number[],
-    puc: string
-  ) => {
-    if (
-      tipoEntidadIds.length === 0 &&
-      gremioIds.length === 0 &&
-      selectedGrupoIds.length === 0
-    ) {
+  const fetchData = async (tipoEntidadIds: number[], gremioIds: number[], grupoIds: number[], puc: string) => {
+
+    if (tipoEntidadIds.length === 0 && gremioIds.length === 0 &&selectedGrupoIds.length === 0){
       return;
     }
+
     setIsLoadingEntidad(true);
     setShowTable(false);
 
@@ -197,21 +194,27 @@ export const FormInfo = (props: any) => {
       });
 
       const queryString = [
-        tipoEntidadIds.length > 0
-          ? `TipoEntidad=${tipoEntidadIds.join("&TipoEntidad=")}`
-          : "",
+        tipoEntidadIds.length > 0 ? `TipoEntidad=${tipoEntidadIds.join("&TipoEntidad=")}` : "",
         gremioIds.length > 0 ? `Gremio=${gremioIds.join("&Gremio=")}` : "",
-        grupoIds.length > 0
-          ? `Grupo_Activo=${grupoIds.join("&Grupo_Activo=")}`
-          : "",
+        grupoIds.length > 0 ? `Grupo_Activo=${grupoIds.join("&Grupo_Activo=")}` : "",
         puc ? `puc=${puc}` : "",
       ]
         .filter(Boolean)
         .join("&");
 
       const finalQueryString = queryString ? `?${queryString}` : "";
-
       const res: IEntidad[] = await entidadService.getAll(finalQueryString);
+
+      const hasGrupoActivo = res.some(item => item.Grupo_Activo !== undefined);
+
+      let headers = [...initialHeaders];
+      let column = [...initialColumn];
+  
+      if (hasGrupoActivo) {
+        // console.log("grupo activo existe.");
+        headers.push("Saldo mas Reciente"); 
+        column.push("fecha_tamaño");
+      }
 
       const newAddedItems: AddedItems = {
         solidaria: [],
@@ -239,7 +242,9 @@ export const FormInfo = (props: any) => {
       dispatch(setEntidad(res));
       setAddedItems(newAddedItems);
       setIsLoadingEntidad(false);
-      // console.log("nuevos items", newAddedItems);
+
+      setHeaders(headers);
+      setColumns(column); 
     } catch (error) {
       setIsLoadingEntidad(false);
       console.log("Error ==>", error);
@@ -1019,10 +1024,6 @@ export const FormInfo = (props: any) => {
       return;
     }
 
-    //const url_3 = "http://localhost:8000/api/v1/bal_sup/indicador_financiero";
-    //const url_4 = "http://localhost:8000/api/v1/bal_coop/indicador_financiero";
-    //const url_5 = "http://localhost:8000/api/v1/bal_sup/indicador_cartera";
-    //const url_6 = "http://localhost:8000/api/v1/bal_coop/indicador_cartera";
     const url_3 = `${apiUrlv1}/bal_sup/indicador_financiero`;
     const url_4 = `${apiUrlv1}/bal_coop/indicador_financiero`;
     const url_5 = `${apiUrlv1}/bal_sup/indicador_cartera`;
@@ -1183,6 +1184,9 @@ export const FormInfo = (props: any) => {
   const handleTabChange = (tab: any) => {
     setActiveTab(tab);
   };
+
+  const [headers, setHeaders] = useState(initialHeaders);
+  const [column, setColumns] = useState(initialColumn);
 
   return (
     <div className="block mt-0 w-screen px-3 py-3 bg-transparent">
