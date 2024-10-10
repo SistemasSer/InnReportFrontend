@@ -23,7 +23,7 @@ export const personSlice = createSlice({
         },
     }
 })
-console.log(personSlice.reducer)
+// console.log(personSlice.reducer)
 
 export const { setData, setPersons } = personSlice.actions
 

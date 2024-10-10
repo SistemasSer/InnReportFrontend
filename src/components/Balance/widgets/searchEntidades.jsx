@@ -116,16 +116,15 @@ export const SearchEntidades = ({
   };
 
   return (
-    <div class="relative w-[500px] h-[600px] max-w-[24rem] rounded-lg overflow-hidden shadow-sm ml-4 bottom-9">
-      <div class="flex flex-col bg-gray-300">
-        <div class=" m-2 items-center flex justify-center text-white h-24 rounded-md bg-slate-800">
-          <h3 class="text-2xl font-bold">Entidades {entidadTitle}</h3>
+    <div className="relative w-[500px] h-[600px] max-w-[24rem] rounded-lg overflow-hidden shadow-sm ml-4 bottom-9">
+      <div className="flex flex-col bg-gray-300">
+        <div className=" m-2 items-center flex justify-center text-white h-24 rounded-md bg-slate-800">
+          <h3 className="text-2xl font-bold">Entidades {entidadTitle}</h3>
         </div>
-        <div class="flex flex-col gap-2 px-6 py-2">
+        <div className="flex flex-col gap-2 px-6 py-2">
           <div>
             <label
-              for="first_name"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Periodo
             </label>
@@ -137,7 +136,7 @@ export const SearchEntidades = ({
             />
           </div>
 
-          <div class="w-full max-w-sm min-w-[200px] mt-2">
+          <div className="w-full max-w-sm min-w-[200px] mt-2">
             <Select
               options={CodigoSelect}
               onChange={handleCodigoSelect}
@@ -147,7 +146,7 @@ export const SearchEntidades = ({
             />
           </div>
 
-          <div class="w-full max-w-sm min-w-[200px] mt-3">
+          <div className="w-full max-w-sm min-w-[200px] mt-3">
             <Select
               isMulti
               options={EntidadSelect}
@@ -161,7 +160,7 @@ export const SearchEntidades = ({
 
 
         </div>
-        <div class="p-6 pt-0 mt-20 flex justify-end">
+        <div className="p-6 pt-0 mt-20 flex justify-end">
           <button
             type="button"
             className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"

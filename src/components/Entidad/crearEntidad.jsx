@@ -54,7 +54,9 @@ const NewEntity = ({ isOpen, closeModal, onEntityCreated  }) => {
 
   const validate = () => {
     const newErrors = {};
+    if (nit.length!==9) newErrors.nit = "El NIT debe ser un numero de 9 cifras";
     if (!nit) newErrors.nit = "El NIT no puede estar vacío.";
+    if (dv.length!==1) newErrors.dv = "El DV debe ser un numero de una cifra";
     if (!dv) newErrors.dv = "El DV no puede estar vacío.";
     if (!razonSocial)newErrors.razonSocial = "La Razon Social no puede estar vacía.";
     if (!sigla) newErrors.sigla = "La sigla  no puede estar vacía.";

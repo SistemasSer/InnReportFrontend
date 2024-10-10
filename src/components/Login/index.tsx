@@ -63,7 +63,7 @@ function Login() {
         body: JSON.stringify({ email, password }),
       });
 
-      console.log("Código de estado de la respuesta:", response.status);
+      // console.log("Código de estado de la respuesta:", response.status);
 
       if (response.ok) {
         const json = (await response.json()) as AuthResponse;

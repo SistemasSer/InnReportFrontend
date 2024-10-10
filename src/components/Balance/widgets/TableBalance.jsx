@@ -4,7 +4,8 @@ import { faFilePdf, faFileExcel } from "@fortawesome/free-solid-svg-icons";
 import { BalanceEntidad } from "../utils/BalanceEntidad";
 import { PdfBalance } from "../utils/PdfBalance";
 import { ExcelBalance } from "../utils/ExcelBalance";
-import { grid } from "ldrs";
+// import { grid } from "ldrs";
+import { trefoil } from 'ldrs'
 
 export const TableBalance = ({ balanceData }) => {
   const [responseData, setResponseData] = useState([]);
@@ -90,17 +91,26 @@ export const TableBalance = ({ balanceData }) => {
 
   console.log(tableData);
   
-  grid.register();
+  // grid.register();
+  trefoil.register()
 
   return (
     <>
       {isLoading ? (
         <div className="h-[400px] flex justify-center items-center">
-          <l-grid
+          {/* <l-grid
             size="120"
             speed="1.5" 
             color="black" 
-          ></l-grid>
+          ></l-grid> */}
+          <l-trefoil
+            size="80"
+            stroke="8"
+            stroke-length="0.15"
+            bg-opacity="0.1"
+            speed="2" 
+            color="black" 
+          ></l-trefoil>
         </div>
       ) : (
         <div className="ml-4">

@@ -35,7 +35,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setUser(JSON.parse(storedUserData)); 
       setIsAuthenticated(true);
     } else {
-      setIsAuthenticated(false);
+      setIsAuthenticated(false); //revisado
     }
     setIsLoading(false);
   }, []);
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     accessToken: string,
     refreshToken: string
   ) {
-    console.log("setAccessTokenAndRefreshToken", accessToken, refreshToken);
+    // console.log("setAccessTokenAndRefreshToken", accessToken, refreshToken);
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
 
@@ -89,6 +89,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function getNewAccessToken(refreshToken: string) {
     const token = await requestNewAccessToken(refreshToken);
+    // console.log(token);
     if (token) {
       return token;
     }
@@ -105,47 +106,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setAccessToken("");
     setRefreshToken("");
     setUser(undefined);
-    setIsAuthenticated(false);
+    setIsAuthenticated(false); //revisado
   }
-
-  // async function checkAuth() {
-  //   try {
-  //     if (!!accessToken) {
-  //       //existe access token
-  //       const userInfo = await retrieveUserInfo(accessToken);
-  //       console.log(userInfo);
-        
-  //       setUser(userInfo);
-  //       setAccessToken(accessToken);
-  //       setIsAuthenticated(true);
-  //       setIsLoading(false);
-  //     } else {
-  //       //no existe access token
-  //       const token = localStorage.getItem("token");
-  //       if (token) {
-  //         console.log("useEffect: token", token);
-  //         const refreshToken = JSON.parse(token).refreshToken;
-  //         //pedir nuevo access token
-  //         getNewAccessToken(refreshToken)
-  //           .then(async (newToken) => {
-  //             // const userInfo = await retrieveUserInfo(newToken!);
-  //             // setUser(userInfo);
-  //             setAccessToken(newToken!);
-  //             setIsAuthenticated(true);
-  //             setIsLoading(false);
-  //           })
-  //           .catch((error) => {
-  //             console.log(error);
-  //             setIsLoading(false);
-  //           });
-  //       } else {
-  //         setIsLoading(false);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     setIsLoading(false);
-  //   }
-  // }
 
   async function checkAuth() {
     try {
@@ -153,24 +115,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // Existe un access token
         const userInfo = await retrieveUserInfo(accessToken);
         if (userInfo) {
-          console.log(userInfo);
+          // console.log(userInfo);
           setUser(userInfo);
           setIsAuthenticated(true);
         } else {
           // Si no se obtiene información del usuario, maneja el caso aquí
           console.error('No se pudo obtener información del usuario');
-          setIsAuthenticated(false);
+          setIsAuthenticated(false); //revisado
         }
         setAccessToken(accessToken);
       } else {
         // No existe un access token
         const token = localStorage.getItem("token");
         if (token) {
-          console.log("useEffect: token", token);
+          // console.log("useEffect: token", token);
           const refreshToken = JSON.parse(token).refreshToken;
           
           try {
+            // console.log("refreshToken");
+            // console.log(refreshToken);
             const newToken = await getNewAccessToken(refreshToken);
+            // console.log("newToken");
+            // console.log(newToken);
+            
             if (newToken) {
               setAccessToken(newToken);
               // Considera obtener información del usuario con el nuevo token
@@ -182,14 +149,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
             } else {
               // Maneja el caso en que no se obtiene un nuevo token
               console.error('No se pudo obtener un nuevo token');
-              setIsAuthenticated(false);
+              setIsAuthenticated(false); //causa problemas
             }
           } catch (error) {
-            console.log('Error obteniendo un nuevo token:', error);
-            setIsAuthenticated(false);
+            // console.log('Error obteniendo un nuevo token:', error);
+            setIsAuthenticated(false); //revisado
           }
         } else {
-          setIsAuthenticated(false);
+          setIsAuthenticated(false); //revisado
         }
       }
       setIsLoading(false);
@@ -253,7 +220,7 @@ async function retrieveUserInfo(accessToken: string) {
 
     if (response.ok) {
       const json = await response.json();
-      console.log(`json ${json}`); // Verifica que `json.body` contiene `is_staff`
+      // console.log(`json ${json}`); // Verifica que `json.body` contiene `is_staff`
       return json.body; 
     }
   } catch (error) {

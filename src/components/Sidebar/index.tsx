@@ -47,6 +47,7 @@ function Sidebar() {
   return (
     <div className="h-screen  max-w-[15rem] p-2 shadow-xl shadow-blue-gray-900/5 bg-slate-700">
       <List>
+
         <Accordion
           open={open === 1}
           icon={
@@ -110,6 +111,7 @@ function Sidebar() {
             </List>
           </AccordionBody>
         </Accordion>
+
         <Accordion
           open={open === 2}
           icon={
@@ -122,9 +124,7 @@ function Sidebar() {
           }
         >
           <ListItem
-            className={`p-0 hover:bg-slate-300 w-[170px] ${
-              open === 2 ? "bg-slate-500" : ""
-            }`}
+            className={`p-0 hover:bg-slate-300${open === 2 ? "bg-slate-500" : "" }`}
             selected={open === 2}
           >
             <AccordionHeader
@@ -138,7 +138,7 @@ function Sidebar() {
                 color="blue-gray"
                 className="mr-auto font-normal text-slate-400"
               >
-                Servicios {"    "}
+                Servicios {"       "}
               </Typography>
             </AccordionHeader>
           </ListItem>
@@ -154,6 +154,7 @@ function Sidebar() {
             </Link>
           </AccordionBody>
         </Accordion>
+
         <Link to="/resumen">
           <ListItem className="hover:bg-slate-300">
             <ListItemPrefix className="text-slate-400">
