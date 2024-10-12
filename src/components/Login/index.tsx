@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import authSlice from "../../store/slices/auth";
-import iconoInnreport from "../../assets/Innreport 1.png";
+
 
 import { useAuth } from "../../auth/AuthProvider";
 import { AuthResponse, AuthResponseError } from "../../types/types";
@@ -70,7 +70,7 @@ function Login() {
 
         if (json.access && json.refresh) {
           auth.saveUser(json);
-          navigate("/entidad");
+          navigate("/home");
         }
       } else {
         const errorText = await response.text();
@@ -128,7 +128,7 @@ function Login() {
             padding: 0,
           }}
         >
-          <img src={iconoInnreport} alt="Logo" className="mb-4 h-44" />
+          <img src="/Innreport1.png" alt="Logo" className="mb-4 h-44" />
         </div>
         <div className="mb-4">
           <label
@@ -141,7 +141,7 @@ function Login() {
             type="email"
             id="email"
             className="w-full p-2 border rounded-md"
-            placeholder="Digita tu correo electrónico"
+            placeholder="Digite su correo electrónico en el campo"
             value={email}
             onChange={handleEmailChange}
             required
@@ -158,7 +158,7 @@ function Login() {
             type="password"
             id="password"
             className="w-full p-2 border rounded-md"
-            placeholder="Digita tu contraseña"
+            placeholder="Digite su contraseña en el campo"
             value={password}
             onChange={handlePasswordChange}
             required

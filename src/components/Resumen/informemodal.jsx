@@ -20,29 +20,68 @@ const Informemodal = ({ isOpen, closeModal, onSuccess }) => {
     }
   }, [isOpen]);
 
+  const [errors, setErrors] = useState({
+    nombre: "",
+    fecha: "",
+    archivo: "",
+  });
+
+  const validate = () => {
+    const newErrors = {};
+    if (!nombre) newErrors.nombre = "El Nombre de informe no puede entrar vacío";
+    if (!fecha) newErrors.fecha = "El Fecha no puede entrar vacío";
+    if (!archivo) newErrors.archivo = "El Informe debe tener algún Archivo";
+
+    setErrors(newErrors);
+
+    const firstErrorField = Object.keys(newErrors)[0];
+    if (firstErrorField) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        timer: 1900,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "error",
+        title: newErrors[firstErrorField],
+      });
+    }
+
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
+    if (!validate()) {
+      return;
+    }
+  
     const formData = new FormData();
     formData.append("nombre", nombre);
     formData.append("fecha", fecha);
     formData.append("archivo", archivo);
-
+  
     try {
       const response = await fetch(`${apiUrlv1}/subirDocumento`, {
         method: "POST",
         body: formData,
       });
-
+  
       if (response.ok) {
         const result = await response.json();
-
+  
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
-          animate: true,
           showConfirmButton: false,
-          timer: 2000,
+          timer: 1900,
           timerProgressBar: true,
           didOpen: (toast) => {
             toast.onmouseenter = Swal.stopTimer;
@@ -53,21 +92,20 @@ const Informemodal = ({ isOpen, closeModal, onSuccess }) => {
           icon: "success",
           text: result.message || "Documento subido exitosamente.",
         });
-
+  
         if (onSuccess) {
           onSuccess();
         }
-
+  
         closeModal();
       } else {
         const error = await response.json();
-
+  
         const Toast = Swal.mixin({
           toast: true,
           position: "top",
-          animate: true,
           showConfirmButton: false,
-          timer: 2000,
+          timer: 1900,
           timerProgressBar: true,
           didOpen: (toast) => {
             toast.onmouseenter = Swal.stopTimer;
@@ -83,9 +121,8 @@ const Informemodal = ({ isOpen, closeModal, onSuccess }) => {
       const Toast = Swal.mixin({
         toast: true,
         position: "top",
-        animate: true,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 1900,
         timerProgressBar: true,
         didOpen: (toast) => {
           toast.onmouseenter = Swal.stopTimer;
@@ -103,7 +140,7 @@ const Informemodal = ({ isOpen, closeModal, onSuccess }) => {
 
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 w-full h-full bg-black bg-opacity-40 z-20 flex justify-center items-center transition duration-500">
-      <div className="bg-gray-200 px-10 pt-10 pb-0 rounded-[20px] shadow-[3xp_3x_5xp_3xp_rgb(37,37,37)] w-[620px] h-[520px] overflow-y-auto">
+      <div className="bg-gray-200 px-10 pt-10 pb-0 rounded-[20px] shadow-[3xp_3x_5xp_3xp_rgb(37,37,37)] w-[620px] h-[600px] overflow-y-auto">
         <div className="flex flex-row place-content-between">
           <h3 className="text-3xl font-bold dark:text-white">
             Subir el Informe
@@ -178,7 +215,7 @@ const Informemodal = ({ isOpen, closeModal, onSuccess }) => {
               </label>
             </div>
           </div>
-          <div className="w-full flex place-self-end place-content-end">
+          <div className="w-full mt-10 flex place-self-end place-content-end">
             <button
               type="submit"
               className="h-10 w-35 px-4 mt-4 text-white font-bold rounded-lg border-2 border-blue-800 bg-blue-950 hover:bg-white hover:text-blue-950 ease-in duration-300"

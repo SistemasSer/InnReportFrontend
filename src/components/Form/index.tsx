@@ -99,7 +99,7 @@ export const Form = () => {
                 <input 
                     id="Nit"
                     type="text" 
-                    placeholder="Digita un NIT"
+                    placeholder="Digite la NIT en el campo"
                     value={person.data.Nit}
                     onChange={(e)=>setFormValue(e)}
                     className={errorForm.Nit?inputCSS+inputError:inputCSS } />
@@ -111,7 +111,7 @@ export const Form = () => {
                 <input 
                     id="RazonSocial"
                     type="text" 
-                    placeholder="Digita la razón social"
+                    placeholder="Digite la razón social en el campo"
                     value={person.data.RazonSocial}
                     onChange={(e)=>setFormValue(e)}
                     className={errorForm.RazonSocial?inputCSS+inputError:inputCSS } />
@@ -123,7 +123,7 @@ export const Form = () => {
                 <input 
                     id="Sigla"
                     type="number" 
-                    placeholder="Digita la sigla" 
+                    placeholder="Digite la sigla en el campo" 
                     value={person.data.Sigla}
                     onChange={(e)=>setFormValue(e)}
                     className={errorForm.Sigla?inputCSS+inputError:inputCSS } />

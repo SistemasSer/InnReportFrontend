@@ -70,9 +70,8 @@ const TipoEntidad = ({ onSelectionChange, titulo }) => {
         type="module"
       ></script>
       <p className="mb-3 text-left rtl:text-right text-gray-900 dark:text-gray-400">
-        Puede seleccionar las entidades dependiendo su Tipo, Gremio o Tamaño de
-        activos, haciendo clic en su nombre o en la casilla a la izquierda.
-        Luego, haz clic en "Buscar Entidad" para finalizar la búsqueda.
+      Puedes seleccionar las entidades según su tipo, gremio o tamaño del saldo, dependiendo del estado de cada entidad. Para ello, haz clic en el nombre de la entidad o en la casilla a la izquierda.
+      Luego, presiona "Buscar Entidad" para completar la búsqueda.
       </p>
       <div className="mt-1">
         <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -123,7 +122,7 @@ const TipoEntidad = ({ onSelectionChange, titulo }) => {
                 htmlFor="AhorroCheck2"
                 className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
-                Cooperativas de Ahorro y Credito
+                Cooperativas de Ahorro y Crédito
               </label>
             </div>
           </li>
@@ -140,7 +139,7 @@ const TipoEntidad = ({ onSelectionChange, titulo }) => {
                 htmlFor="CompañiasCheck3"
                 className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
-                Compañias Financieras
+                Compañías Financieras
               </label>
             </div>
           </li>

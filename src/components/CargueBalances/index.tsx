@@ -121,7 +121,7 @@ const CargueBalance: React.FC = () => {
     if (file) {
       try {
         const extractedData: any = await extractDataFromExcel(file);
-        console.log("Extracted data:", extractedData);
+        // console.log("Extracted data:", extractedData);
         setExtractedData(extractedData);
         //const response = await fetch("http://localhost:8000/api/v1/bal_sup", {
         const response = await fetch(`${apiUrlv1}/bal_sup`, {
@@ -247,12 +247,12 @@ const CargueBalance: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = e.target.files?.[0];
-    console.log("File selected:", file);
+    // console.log("File selected:", file);
 
     if (file) {
       try {
         const extractedData: any = await extractDataFromExcelSolidaria(file);
-        console.log("Extracted data:", extractedData);
+        // console.log("Extracted data:", extractedData);
         const response = await fetch(`${apiUrlv1}/bal_coop`, {
           method: "POST",
           headers: {
@@ -275,7 +275,7 @@ const CargueBalance: React.FC = () => {
           throw new Error(errorMessage);
         }
 
-        console.log("Response JSON data:", responseData);
+        // console.log("Response JSON data:", responseData);
 
         setPeriodo(null);
         setMes(null);
@@ -350,8 +350,8 @@ const CargueBalance: React.FC = () => {
           </div>
           <div className="mt-10 flex flex-col justify-center items-center">
             <p className="font-bold" style={{ fontSize: 20 }}>
-              La extraccion de datos puede tardar uno o varios minutos
-              dependiento de la cantidad de elementos.
+              La extracción de datos puede tardar uno o varios minutos
+              dependiendo de la cantidad de elementos.
             </p>
             <p className="mt-6 text-gray-800 font-semibold ">
               Cantidad de datos:{" "}
@@ -421,7 +421,7 @@ const CargueBalance: React.FC = () => {
                     htmlFor="fileInput"
                     className="bg-teal-600 hover:bg-teal-800 text-gray-50 font-semibold py-5 px-3 rounded-lg cursor-pointer"
                   >
-                    Compañias de financiamiento
+                    Compañías de financiamiento
                   </label>
                   <input
                     type="file"

@@ -89,7 +89,7 @@ export const TableBalance = ({ balanceData }) => {
     return null;
   }
 
-  console.log(tableData);
+  // console.log(tableData);
   
   // grid.register();
   trefoil.register()
@@ -115,11 +115,11 @@ export const TableBalance = ({ balanceData }) => {
       ) : (
         <div className="ml-4">
           <div>
-            <h2 class="text-4xl font-extrabold dark:text-white">
+            <h2 className="text-4xl font-extrabold dark:text-white">
               {balanceData?.pucName || "cargando"}
             </h2>
             <div className="w-full flex items-center place-content-between">
-              <h2 class="text-2xl font-extrabold">
+              <h2 className="text-2xl font-extrabold">
                 {getMonthName(balanceData?.mes) || "cargando"} -{" "}
                 {balanceData?.año || "cargando"}
               </h2>
@@ -150,20 +150,20 @@ export const TableBalance = ({ balanceData }) => {
               </div>
             </div>
           </div>
-          <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-400">
-              <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-400">
+              <thead className="text-xs uppercase bg-gray-700 text-gray-400">
                 <tr>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Nit
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Razon Social
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Sigla
                   </th>
-                  <th scope="col" class="px-6 py-3 ">
+                  <th scope="col" className="px-6 py-3 ">
                     Saldo
                   </th>
                 </tr>

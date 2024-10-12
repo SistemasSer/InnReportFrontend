@@ -5,13 +5,13 @@ import { saveAs } from 'file-saver';
 const BotonArchivo = () => {
   const handleDownload = () => {
     const url = '/archivos/Formato_Ahorro_Credito.xlsx'; 
-    console.log(`Intentando descargar desde: ${url}`);
+    // console.log(`Intentando descargar desde: ${url}`);
 
     fetch(url, {
       method: 'GET', 
     })
       .then(response => {
-        console.log(`Respuesta de GET: ${response.status} ${response.statusText}`);
+        // console.log(`Respuesta de GET: ${response.status} ${response.statusText}`);
         if (response.ok) {
           return response.blob(); 
         } else {

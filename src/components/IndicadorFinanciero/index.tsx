@@ -1,6 +1,5 @@
 import FormInfo from "../FormInfo";
 
-
 function IFinanciero() {
 
 

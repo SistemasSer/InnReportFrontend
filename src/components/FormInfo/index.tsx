@@ -22,7 +22,7 @@ import { PdfIndicadores } from "./pdfIndicadores";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 
-export const FormInfo = (props: any) => {
+const FormInfo = (props: any) => {
   const title = props.title;
   const puc = props.puc;
   const showButton1 = props.showButton1;
@@ -82,7 +82,7 @@ export const FormInfo = (props: any) => {
     return monthNames[monthNumber - 1];
   };
 
-  //limipar buscarentidad
+  //limpiar buscar entidad
   const [shouldClear, setShouldClear] = useState(false);
   const [selectedTipoEntidadIds, setSelectedTipoEntidadIds] = useState<
     number[]
@@ -374,7 +374,7 @@ export const FormInfo = (props: any) => {
     const url_2 = `${apiUrlv1}/bal_coop_a`;
     const payload = validDates;
 
-    console.log(payload);
+    // console.log(payload);
     
 
     // console.log("dataOne: ", JSON.stringify(payload));
@@ -401,11 +401,11 @@ export const FormInfo = (props: any) => {
       
 
       const data_1 = await response_1.json();
-      console.log("data_1");
-      console.log(data_1);
+      // console.log("data_1");
+      // console.log(data_1);
       const data_2 = await response_2.json();
-      console.log("data_2");
-      console.log(data_2);
+      // console.log("data_2");
+      // console.log(data_2);
 
 
       const data: IActive[] = Object.values(data_1).concat(
@@ -711,7 +711,7 @@ export const FormInfo = (props: any) => {
     if (validDates.length === 0) {
       Swal.fire({
         icon: "error",
-        title: "Datos Invalidos",
+        title: "Datos Inválidos",
         text: "No seleccionaste ninguna fecha",
       });
       setIsLoading(false);
@@ -747,6 +747,13 @@ export const FormInfo = (props: any) => {
         },
         body: JSON.stringify(payload),
       });
+
+      if (!response_3.ok) {
+        const errorText = await response_3.text();
+        throw new Error(`Error en la solicitud 3: ${response_3.status}, ${errorText}`);
+      }
+      const data_3 = await response_3.json();
+
       const response_4 = await fetch(url_4, {
         method: "POST",
         headers: {
@@ -754,6 +761,13 @@ export const FormInfo = (props: any) => {
         },
         body: JSON.stringify(payload),
       });
+
+      if (!response_4.ok) {
+        const errorText = await response_4.text();
+        throw new Error(`Error en la solicitud 3: ${response_4.status}, ${errorText}`);
+      }
+      const data_4 = await response_4.json();
+
       const response_5 = await fetch(url_5, {
         method: "POST",
         headers: {
@@ -761,6 +775,13 @@ export const FormInfo = (props: any) => {
         },
         body: JSON.stringify(payload),
       });
+
+      if (!response_5.ok) {
+        const errorText = await response_5.text();
+        throw new Error(`Error en la solicitud 3: ${response_5.status}, ${errorText}`);
+      }
+      const data_5 = await response_5.json();
+
       const response_6 = await fetch(url_6, {
         method: "POST",
         headers: {
@@ -769,12 +790,18 @@ export const FormInfo = (props: any) => {
         body: JSON.stringify(payload),
       });
 
+      if (!response_6.ok) {
+        const errorText = await response_6.text();
+        throw new Error(`Error en la solicitud 3: ${response_6.status}, ${errorText}`);
+      }
+      const data_6 = await response_6.json();
+
       type JsonItem = Record<string, any>;
 
-      const data_3: JsonItem[] = await response_3.json();
-      const data_4: JsonItem[] = await response_4.json();
-      const data_5: JsonItem[] = await response_5.json();
-      const data_6: JsonItem[] = await response_6.json();
+      // const data_3: JsonItem[] = await response_3.json();
+      // const data_4: JsonItem[] = await response_4.json();
+      // const data_5: JsonItem[] = await response_5.json();
+      // const data_6: JsonItem[] = await response_6.json();
 
       const data_financiero: IActive[] = Object.values(data_3).concat(
         Object.values(data_4)
@@ -813,7 +840,7 @@ export const FormInfo = (props: any) => {
 
       const formattedData = formatIndicatorsToPercentage(modifiedData);
       const formattedData2 = formatIndicatorsCartera(modifiedData2);
-      console.log(formattedData);
+      // console.log(formattedData);
       
       const keys2 = Object.keys(formattedData2[0] || {});
       const transposedData2: (string | number | null)[][] = [];
@@ -1039,6 +1066,13 @@ export const FormInfo = (props: any) => {
         },
         body: JSON.stringify(payload),
       });
+
+      if (!response_3.ok) {
+        const errorText = await response_3.text();
+        throw new Error(`Error en la solicitud 3: ${response_3.status}, ${errorText}`);
+      }
+      const data_3 = await response_3.json();
+
       const response_4 = await fetch(url_4, {
         method: "POST",
         headers: {
@@ -1046,6 +1080,13 @@ export const FormInfo = (props: any) => {
         },
         body: JSON.stringify(payload),
       });
+
+      if (!response_4.ok) {
+        const errorText = await response_4.text();
+        throw new Error(`Error en la solicitud 3: ${response_4.status}, ${errorText}`);
+      }
+      const data_4 = await response_4.json();
+
       const response_5 = await fetch(url_5, {
         method: "POST",
         headers: {
@@ -1053,6 +1094,13 @@ export const FormInfo = (props: any) => {
         },
         body: JSON.stringify(payload),
       });
+
+      if (!response_5.ok) {
+        const errorText = await response_5.text();
+        throw new Error(`Error en la solicitud 3: ${response_5.status}, ${errorText}`);
+      }
+      const data_5 = await response_5.json();
+
       const response_6 = await fetch(url_6, {
         method: "POST",
         headers: {
@@ -1061,12 +1109,18 @@ export const FormInfo = (props: any) => {
         body: JSON.stringify(payload),
       });
 
+      if (!response_6.ok) {
+        const errorText = await response_6.text();
+        throw new Error(`Error en la solicitud 3: ${response_6.status}, ${errorText}`);
+      }
+      const data_6 = await response_6.json();
+
       type JsonItem = Record<string, any>;
 
-      const data_3: JsonItem[] = await response_3.json();
-      const data_4: JsonItem[] = await response_4.json();
-      const data_5: JsonItem[] = await response_5.json();
-      const data_6: JsonItem[] = await response_6.json();
+      // const data_3: JsonItem[] = await response_3.json();
+      // const data_4: JsonItem[] = await response_4.json();
+      // const data_5: JsonItem[] = await response_5.json();
+      // const data_6: JsonItem[] = await response_6.json();
 
       const data_financiero: IActive[] = Object.values(data_3).concat(
         Object.values(data_4)
@@ -1172,10 +1226,7 @@ export const FormInfo = (props: any) => {
   const handleNewItems = (newItems: any) => {
     setAddedItems((prevItems) => ({
       solidaria: [...prevItems.solidaria, ...newItems.solidaria],
-      superfinanciera: [
-        ...prevItems.superfinanciera,
-        ...newItems.superfinanciera,
-      ],
+      superfinanciera: [...prevItems.superfinanciera, ...newItems.superfinanciera,],
     }));
   };
 

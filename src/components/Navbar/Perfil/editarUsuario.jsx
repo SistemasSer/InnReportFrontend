@@ -66,8 +66,6 @@ const EditUsuario = ({ isOpen, onClose, prompUser }) => {
       {showAlert && (
         <div
           className="fixed top-4 left-1/2 transform -translate-x-1/2 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100 transition-transform duration-300 ease-in-out"
-          role="alert"
-          aria-live="assertive"
           style={{ zIndex: 9999 }}
         >
           <div className="flex flex-row items-center">

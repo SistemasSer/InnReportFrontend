@@ -18,6 +18,13 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
     setUserEmail("");
     setPasswordNew("");
     setPermissions(false);
+    setPasswordStrength({
+      length: false,
+      lowercase: false,
+      uppercase: false,
+      numbers: false,
+      special: false,
+    });
     closeModal();
   };
 
@@ -41,7 +48,7 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
   const validateEmail = (value) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!value) return "El correo no puede estar vacío.";
-    // if (!regex.test(value)) return "La dirección de correo electrónico proporcionada no parece válida.";
+    if (!regex.test(value)) return "La dirección de correo electrónico proporcionada no parece válida.";
     return "";
   };
   
@@ -120,7 +127,6 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
         const Toast = Swal.mixin({
           toast: true,
           position: "top",
-          animation: true,
           showConfirmButton: false,
           timer: 1900,
           timerProgressBar: true,
@@ -171,15 +177,21 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
       ? "border-teal-200 rounded-md text-sm focus:border-teal-500 focus:ring-teal-500 disabled:opacity-50 disabled:pointer-events-none"
       : "border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none";
 
+  // const handleClickOutside = (e) => {
+  //   if (e.target.id === "crud-modal") {
+  //     handleClearUser();
+  //   }
+  // };
+
   const handleClickOutside = (e) => {
-    if (e.target.id === "crud-modal") {
-      handleClearUser();
+    if (e && e.target) {
+      if (e.target.id === "crud-modal") {
+        handleClearUser();
+      }
     }
   };
 
-  if (!isOpen) {
-    return null;
-  }
+  if (!isOpen) {return null;}
 
   return (
     <div

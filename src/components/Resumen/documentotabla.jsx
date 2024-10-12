@@ -12,7 +12,6 @@ import Informemodal from "./informemodal";
 import EditarDocumento from "./editarDocumento";
 import DeleteDoc from "./borrarDocumento";
 
-
 const Documentotabla = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [informeOpen, setInformeOpen] = useState(false);
@@ -30,7 +29,6 @@ const Documentotabla = () => {
   const user = getUser();
 
   const userData = [user?.is_staff];
-
 
   const loadDocumentos = async () => {
     try {
@@ -113,45 +111,44 @@ const Documentotabla = () => {
     );
   };
 
+  const handleDownload = async (item) => {
+    if (!item?.id || !item?.nombre) return;
 
-    const handleDownload = async (item) => {
-      if (!item?.id || !item?.nombre) return;
-  
-      try {
-        await downloadDocument(item.id, item.nombre);
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top",
-          showConfirmButton: false,
-          timer: 1900,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          }
-        });
-        Toast.fire({
-          icon: "success",
-          title: (`Documento ${item.nombre} descargado con éxito.`)
-        });
-      } catch (error) {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top",
-          showConfirmButton: false,
-          timer: 1900,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          }
-        });
-        Toast.fire({
-          icon: "error",
-          title: (error.message || "Error al descargar el documento.")
-        });
-      }
+    try {
+      await downloadDocument(item.id, item.nombre);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        timer: 1900,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: `Documento ${item.nombre} descargado con éxito.`,
+      });
+    } catch (error) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        timer: 1900,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "error",
+        title: error.message || "Error al descargar el documento.",
+      });
     }
+  };
 
   const abririnforme = () => {
     setInformeOpen(true);
@@ -308,33 +305,22 @@ const Documentotabla = () => {
                           >
                             <TrashIcon className="h-5 w-5 text-gray-100" />
                           </button>
-                          <button
+                          {/* <button
                             type="button"
                             className={`w-8 h-8 text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm  focus:outline-none flex justify-center items-center hidden`}
                             onClick={() => abrirEditarDoc(item)}
                           >
                             <PencilSquareIcon className="h-5 w-5 text-gray-100" />
-                          </button>
+                          </button> */}
 
                           <button
                             type="button"
-                            className="w-8 h-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  focus:outline-none flex justify-center items-center" 
+                            className="w-8 h-8 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  focus:outline-none flex justify-center items-center"
                             onClick={() => handleDownload(item)}
                           >
                             <DocumentArrowDownIcon className="h-5 w-5 text-gray-100" />
                           </button>
                         </td>
-                        <DeleteDoc
-                          isOpen={deleteOpen}
-                          closeModal={() => setDeleteOpen(false)}
-                          item={selectedItem}
-                          onSuccess={handleModalClose}
-                        />
-                        <EditarDocumento
-                          isOpen={editOpen}
-                          closeModal={() => setEditOpen(false)}
-                          item={selectedItem}
-                        />
                       </tr>
                     ))}
                   </tbody>
@@ -343,7 +329,17 @@ const Documentotabla = () => {
             </div>
           </div>
         </div>
-
+        <DeleteDoc
+          isOpen={deleteOpen}
+          closeModal={() => setDeleteOpen(false)}
+          item={selectedItem}
+          onSuccess={handleModalClose}
+        />
+        <EditarDocumento
+          isOpen={editOpen}
+          closeModal={() => setEditOpen(false)}
+          item={selectedItem}
+        />
         <div className="w-full flex justify-center mt-3">
           <nav aria-label="Page navigation example">
             <ul className="flex items-center -space-x-px h-8 text-sm">

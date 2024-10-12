@@ -5,7 +5,7 @@ import { deleteDocument } from "./apiEliminarDocumento";
 const DeleteDoc = ({ isOpen, closeModal, item, onSuccess }) => {
   const [nombreDocumento, setNombreDocumento] = useState("");
 
-  console.log(item);
+  // console.log(item);
 
   useEffect(() => {
     if (isOpen && item) {

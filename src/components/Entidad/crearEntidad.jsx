@@ -53,13 +53,16 @@ const NewEntity = ({ isOpen, closeModal, onEntityCreated  }) => {
   });
 
   const validate = () => {
+    const onlyLetter = /^[a-zA-Z\s]+$/; 
     const newErrors = {};
     if (nit.length!==9) newErrors.nit = "El NIT debe ser un numero de 9 cifras";
     if (!nit) newErrors.nit = "El NIT no puede estar vacío.";
     if (dv.length!==1) newErrors.dv = "El DV debe ser un numero de una cifra";
     if (!dv) newErrors.dv = "El DV no puede estar vacío.";
+    if (!onlyLetter.test(razonSocial)) newErrors.razonSocial = "La Razon Social solo puede contener letras y espacios.";
     if (!razonSocial)newErrors.razonSocial = "La Razon Social no puede estar vacía.";
-    if (!sigla) newErrors.sigla = "La sigla  no puede estar vacía.";
+    if (!onlyLetter.test(sigla)) newErrors.sigla = "La Sigla solo puede contener letras y espacios.";
+    if (!sigla) newErrors.sigla = "La Sigla  no puede estar vacía.";
     if (!tipoEntidad)newErrors.tipoEntidad = "El Tipo Entidad no puede estar vacío.";
     if (!codigoSuper)newErrors.codigoSuper = "El Codigo Super no puede estar vacío.";
     if (!gremio) newErrors.gremio = "El Gremio no puede estar vacío.";
@@ -318,7 +321,7 @@ const NewEntity = ({ isOpen, closeModal, onEntityCreated  }) => {
                 htmlFor="descripcion"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Descripcion
+                Descripción
               </label>
               <input
                 type="text"
@@ -369,7 +372,7 @@ const NewEntity = ({ isOpen, closeModal, onEntityCreated  }) => {
                 htmlFor="direccion"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Direccion
+                Dirección
               </label>
               <input
                 type="text"
@@ -386,7 +389,7 @@ const NewEntity = ({ isOpen, closeModal, onEntityCreated  }) => {
                 htmlFor="telefono"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Telefono
+                Teléfono
               </label>
               <input
                 type="text"
@@ -403,7 +406,7 @@ const NewEntity = ({ isOpen, closeModal, onEntityCreated  }) => {
                 htmlFor="email"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Correo Electronico
+                Correo Electrónico
               </label>
               <input
                 type="email"

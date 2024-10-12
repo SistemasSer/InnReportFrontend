@@ -38,7 +38,6 @@ const ConfirmacionUsuario = ({
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        animation: true,
         timer: 2000,
         timerProgressBar: true,
         didOpen: (toast) => {
@@ -56,7 +55,6 @@ const ConfirmacionUsuario = ({
       const Toast = Swal.mixin({
         toast: true,
         position: "top",
-        animation: true,
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
@@ -128,7 +126,7 @@ const ConfirmacionUsuario = ({
               </span>
             </span>
             <span className="text-lg font-normal text-gray-700">
-              Correo Electrico:{" "}
+              Correo Electrónico:{" "}
               <span className="font-semibold text-gray-800">
                 {correoUsuario}
               </span>

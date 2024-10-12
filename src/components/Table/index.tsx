@@ -404,12 +404,14 @@ export const Table = (props: any) => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {getItemsToDisplay().length === 0 ? (
-              <th
-                colSpan={header.length + 1}
-                className="px-4 py-3 text-gray-500 font-extrabold text-center"
-              >
-                No se encuentran datos
-              </th>
+              <tr>
+                <td
+                  colSpan={header.length + 1}
+                  className="px-4 py-3 text-gray-500 font-extrabold text-center"
+                >
+                  No se encuentran datos
+                </td>
+              </tr>
             ) : (
               getItemsToDisplay().map((item: any, i: any) => {
                 const isAdded =
