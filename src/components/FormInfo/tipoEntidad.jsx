@@ -20,7 +20,7 @@ const TipoEntidad = ({ onSelectionChange, titulo }) => {
     const idNumber = parseInt(id.slice(-1), 10);
     if (checked) {
       setSelectedTipoEntidadIds((prev) => [...prev, idNumber]);
-    } else {
+    }else {
       setSelectedTipoEntidadIds((prev) =>
         prev.filter((item) => item !== idNumber)
       );
@@ -32,7 +32,7 @@ const TipoEntidad = ({ onSelectionChange, titulo }) => {
     const idNumberGremio = parseInt(id.slice(-1), 10);
     if (checked) {
       setSelectedGremioIds((prev) => [...prev, idNumberGremio]);
-    } else {
+    }else {
       setSelectedGremioIds((prev) =>
         prev.filter((item) => item !== idNumberGremio)
       );
@@ -44,7 +44,7 @@ const TipoEntidad = ({ onSelectionChange, titulo }) => {
     const idNumberGrupo = parseInt(id.slice(-1), 10);
     if (checked) {
       setSelectedGrupoIds((prev) => [...prev, idNumberGrupo]);
-    } else {
+    }else {
       setSelectedGrupoIds((prev) =>
         prev.filter((item) => item !== idNumberGrupo)
       );

@@ -50,67 +50,39 @@ function MainLayout() {
 
   return (
     <>
-      {showNavAndFooter && <Navbar />} {/* Conditionally render Navbar */}
+      {showNavAndFooter && <Navbar />}
       <div className={`flex ${showNavAndFooter ? "mt-12" : ""} max-h-[89vh]`}>
-        {showNavAndFooter && <Sidebar />} {/* Conditionally render Sidebar */}
+        {showNavAndFooter && <Sidebar />}
         <main className="bg-white w-screen h-screen flex overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
           <Routes>
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}/>
-
             <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>}/>
-
             <Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>}/>
-
             <Route path="/users/create" element={<ProtectedRoute><UsersCreate /></ProtectedRoute>}/>
-
             <Route path="/entidad"element={<ProtectedRoute><Entidad /></ProtectedRoute>}/>
-
             <Route path="/entidad/create"element={<ProtectedRoute><CreateEntidad /></ProtectedRoute>}/>
-
             <Route path="/puc-coop" element={<ProtectedRoute><PucCoop /></ProtectedRoute>}/>
-
             <Route path="/puc-sup"element={<ProtectedRoute><PucSup /></ProtectedRoute>}/>
-
             <Route path="/clients" element={<ProtectedRoute><Clientes /></ProtectedRoute>}/>
-
             <Route path="/clients/create" element={<ProtectedRoute><CreateClientes /></ProtectedRoute>}/>
-
             <Route path="/cargue_balances" element={<ProtectedRoute><CargueBalances /></ProtectedRoute>}/>
-
             <Route path="/report" element={<ProtectedRoute><Report /></ProtectedRoute>}/>
-
             <Route path="/activos" element={<ProtectedRoute><Activo /></ProtectedRoute>}/>
-
             <Route path="/deposito" element={<ProtectedRoute><Deposito /></ProtectedRoute>}/>
-
             <Route path="/capital_social" element={<ProtectedRoute><CapitalSocial /></ProtectedRoute>}/>
-
             <Route path="/cartera" element={<ProtectedRoute><Cartera /></ProtectedRoute>}/>
-
             <Route path="/costos" element={<ProtectedRoute><Costo /></ProtectedRoute>}/>
-
             <Route path="/disponible" element={<ProtectedRoute><Disponible /></ProtectedRoute>}/>
-
             <Route path="/excedentes" element={<ProtectedRoute><Excedente /></ProtectedRoute>}/>
-
             <Route path="/ingresos" element={<ProtectedRoute><Ingreso /></ProtectedRoute>}/>
-
             <Route path="/intereses" element={<ProtectedRoute><Interes /></ProtectedRoute>}/>
-
             <Route path="/obligaciones" element={<ProtectedRoute><Obligacion /></ProtectedRoute>}/>
-
             <Route path="/reserva" element={<ProtectedRoute><Reserva /></ProtectedRoute>}/>
-
             <Route path="/indicador_financiero"element={<ProtectedRoute><IFinanciero /></ProtectedRoute>}/>
-
             <Route path="/indicador_cartera" element={<ProtectedRoute><ICartera /></ProtectedRoute>}/>
-
             <Route path="/resumen"element={<ProtectedRoute><Resumen /></ProtectedRoute>}/>
-
             <Route path="/Perfil" element={<ProtectedRoute><Perfil /></ProtectedRoute>}/>
-
             <Route path="/Balance-coop" element={<ProtectedRoute><BalanceCoop /></ProtectedRoute>}/>
-
             <Route path="/Balance-sup" element={<ProtectedRoute><BalanceSup /></ProtectedRoute>}/>
           </Routes>
         </main>

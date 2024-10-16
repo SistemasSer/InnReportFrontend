@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+
 import Swal from "sweetalert2";
 
 import * as Yup from "yup";
@@ -64,6 +64,7 @@ function Login() {
       });
 
       // console.log("Código de estado de la respuesta:", response.status);
+      // console.log({ email, password });
 
       if (response.ok) {
         const json = (await response.json()) as AuthResponse;

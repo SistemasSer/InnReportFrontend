@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import IUser from "../../interfaces/User";
-import { UserService } from "../../services/user.service";
+// import IUser from "../../interfaces/User";
+// import { UserService } from "../../services/user.service";
 import Swal from "sweetalert2";
 import PasswordIcon from "../Navbar/Perfil/passwordIcon";
 
@@ -243,8 +243,8 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
                 onChange={handleUserEmail}
                 className={`bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ${
                   validateEmail(userEmail)
-                    ? "border-red-500"
-                    : "border-gray-300"
+                    ? `border-red-500`
+                    : `border-gray-300`
                 }`}
                 placeholder="Correo electrónico"
               />
@@ -360,8 +360,8 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
                     <span
                       className={`text-sm font-medium ${
                         passwordStrength.length
-                          ? "text-teal-600"
-                          : "text-gray-500"
+                          ? `text-teal-600`
+                          : `text-gray-500`
                       }`}
                     >
                       Al menos 8 caracteres
@@ -376,8 +376,8 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
                     <span
                       className={`text-sm font-medium ${
                         passwordStrength.lowercase
-                          ? "text-teal-600"
-                          : "text-gray-500"
+                          ? `text-teal-600`
+                          : `text-gray-500`
                       }`}
                     >
                       Al menos una letra minúscula
@@ -392,8 +392,8 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
                     <span
                       className={`text-sm font-medium ${
                         passwordStrength.uppercase
-                          ? "text-teal-600"
-                          : "text-gray-500"
+                          ? `text-teal-600`
+                          : `text-gray-500`
                       }`}
                     >
                       Al menos una letra mayúscula
@@ -408,8 +408,8 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
                     <span
                       className={`text-sm font-medium ${
                         passwordStrength.numbers
-                          ? "text-teal-600"
-                          : "text-gray-500"
+                          ? `text-teal-600`
+                          : `text-gray-500`
                       }`}
                     >
                       Al menos un número
@@ -424,8 +424,8 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
                     <span
                       className={`text-sm font-medium ${
                         passwordStrength.special
-                          ? "text-teal-600"
-                          : "text-gray-500"
+                          ? `text-teal-600`
+                          : `text-gray-500`
                       }`}
                     >
                       Al menos un carácter especial
@@ -440,8 +440,8 @@ const NewUser = ({ isOpen, closeModal, onUserCreated }) => {
               type="button"
               className={`flex items-center text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center w-[160px] ${
                 Object.values(passwordStrength).every(Boolean)
-                  ? "bg-blue-700 hover:bg-blue-800 focus:ring-blue-300"
-                  : "bg-gray-700 hover:bg-gray-800 focus:ring-gray-300"
+                  ? `bg-blue-700 hover:bg-blue-800 focus:ring-blue-300`
+                  : `bg-gray-700 hover:bg-gray-800 focus:ring-gray-300`
               }`}
               disabled={!Object.values(passwordStrength).every(Boolean)}
               onClick={handleSaveChanges}
