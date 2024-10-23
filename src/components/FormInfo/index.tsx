@@ -397,7 +397,7 @@ const FormInfo = (props: any) => {
         },
         body: JSON.stringify(payload),
       });
-      // console.log(JSON.stringify(payload));
+      console.log(JSON.stringify(payload));
       
 
       const data_1 = await response_1.json();

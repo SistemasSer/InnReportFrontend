@@ -112,7 +112,7 @@ const CargueBalance: React.FC = () => {
     });
   };
 
-  //FUNCION BOTON BANCOS,COMPAÑIAS Y COOPERATIVAS FINANCIERAS
+  //FUNCIÓN BOTÓN BANCOS,COMPAÑÍAS Y COOPERATIVAS FINANCIERAS
   const handleFileInputChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -123,7 +123,6 @@ const CargueBalance: React.FC = () => {
         const extractedData: any = await extractDataFromExcel(file);
         // console.log("Extracted data:", extractedData);
         setExtractedData(extractedData);
-        //const response = await fetch("http://localhost:8000/api/v1/bal_sup", {
         const response = await fetch(`${apiUrlv1}/bal_sup`, {
           method: "POST",
           headers: {
@@ -163,42 +162,50 @@ const CargueBalance: React.FC = () => {
   };
 
   //FORMATO SUPERSOLIDARIA
-  const extractDataFromExcelSolidaria = (file: File) => {
+  const extractDataFromExcelSolidaria = (file: File): Promise<any[]> => {
     return new Promise((resolve, reject) => {
       setIsLoading(true);
-
+  
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
-          const data = e?.target?.result;
+          const data = e?.target?.result as ArrayBuffer;
           const workbook = XLSX.read(data, { type: "array" });
-
+  
           const sheetName = workbook.SheetNames[0];
-
           const worksheet = workbook.Sheets[sheetName];
-
-          const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet, {
-            header: 1,
-          });
-
-          let pucRowIndex = null;
-          let entityRowIndex = null;
-
+  
+          const jsonData: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+  
+          let pucRowIndex: number | null = null;
+          let entityRowIndex: number | null = null;
+          let entityColumnIndex: number | null = null;
+  
+          // Encuentra el índice de la fila para "CUENTA"
           for (let row = 0; row < 50; row++) {
             if (jsonData[row] && jsonData[row][0] === "CUENTA") {
               pucRowIndex = row + 2;
               break;
             }
           }
-
+  
+          // Encuentra el índice de la fila para "CÓDIGO ENTIDAD"
           for (let row = 0; row < 50; row++) {
-            if (jsonData[row] && jsonData[row][2] === "NOMBRE ENTIDAD") {
-              entityRowIndex = row;
-              break;
+            if (jsonData[row]) {
+              if (jsonData[row][1] === "CODIGO ENTIDAD") {
+                entityRowIndex = row + 1;
+                entityColumnIndex = 2;
+                break;
+              } else if (jsonData[row][2] === "CODIGO ENTIDAD") {
+                entityRowIndex = row + 1;
+                entityColumnIndex = 3;
+                break;
+              }
             }
           }
-
-          if (pucRowIndex === null || entityRowIndex === null) {
+  
+          // Verifica si se encontraron ambos índices
+          if (pucRowIndex === null || entityRowIndex === null || entityColumnIndex === null) {
             Swal.fire({
               icon: "error",
               title: "Formato Incorrecto",
@@ -207,52 +214,53 @@ const CargueBalance: React.FC = () => {
             setIsLoading(false);
             return;
           }
-
+  
           const extractedData: any[] = [];
-
+  
+          // Extrae los datos
           for (let pucIndex = pucRowIndex; pucIndex <= 3854; pucIndex++) {
             if (!jsonData[pucIndex]) continue;
-            for (let entityIndex = 3; entityIndex <= 180; entityIndex++) {
-              if (
-                !jsonData[entityRowIndex] ||
-                !jsonData[entityRowIndex][entityIndex]
-              )
-                continue;
-              if (!jsonData[pucIndex][entityIndex]) continue;
+  
+            // Reiniciar entityColumnIndex para cada nueva fila de pucIndex
+            for (let columnIndex = entityColumnIndex; columnIndex <= 180; columnIndex++) {
+              if (!jsonData[entityRowIndex] || columnIndex < 0 || columnIndex >= jsonData[entityRowIndex].length) continue;
+              if (!jsonData[pucIndex][columnIndex]) continue;
+
               const extractedItem = {
                 periodo,
                 mes,
-                entidad_RS: jsonData[entityRowIndex][entityIndex],
+                entidad_RS: jsonData[entityRowIndex][columnIndex],
                 puc_codigo: jsonData[pucIndex][0],
-                saldo: jsonData[pucIndex][entityIndex],
+                saldo: jsonData[pucIndex][columnIndex],
               };
               extractedData.push(extractedItem);
             }
           }
+  
           setExtractedData(extractedData);
-          // console.log(extractedData);
+          console.log(extractedData);
           resolve(extractedData);
         } catch (error) {
           console.error("Error processing file:", error);
           reject(error);
         }
       };
-
+  
       reader.readAsArrayBuffer(file);
     });
   };
 
-  //FUNCION BOTON SOLIDARIA
+  //FUNCIÓN BOTÓN SOLIDARIA
   const handleFileInputChangeSolidaria = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = e.target.files?.[0];
-    // console.log("File selected:", file);
+    console.log("File selected:", file);
 
     if (file) {
       try {
         const extractedData: any = await extractDataFromExcelSolidaria(file);
-        // console.log("Extracted data:", extractedData);
+        console.log("Extracted data:", extractedData);
         const response = await fetch(`${apiUrlv1}/bal_coop`, {
           method: "POST",
           headers: {
@@ -275,7 +283,7 @@ const CargueBalance: React.FC = () => {
           throw new Error(errorMessage);
         }
 
-        // console.log("Response JSON data:", responseData);
+        console.log("Response JSON data:", responseData);
 
         setPeriodo(null);
         setMes(null);
